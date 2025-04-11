@@ -9,7 +9,7 @@ def get_random_id():
 
 
 
-# The mian Student Database Class
+# The main Student Database Class
 class StudentDatabase:
     # add a class attribute named student_list
     __student_list = []
@@ -150,7 +150,7 @@ while True:
         break
     else:
         print("Invalid choice. Please try again.")
-        break
+        continue
 
 
 
