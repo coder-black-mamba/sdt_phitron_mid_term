@@ -1,4 +1,4 @@
-# bismillahir rahmanir rahim
+# Bismillahir Rahmanir Rahim
 import random
 
 
@@ -13,22 +13,24 @@ def get_random_id():
 class StudentDatabase:
     # add a class attribute named student_list
     __student_list = []
+
     def __init__(self):
         pass
 
 
-    # defining a add_student method to insert an object of Student Class
+    # defining add_student method to insert an object of Student Class
     @classmethod
     def add_student(cls,student_obj):
         cls.__student_list.append(student_obj)
+
 
     # defining the class method for viewing all the student data
     @classmethod
     def view_all_students(cls):
         if len(cls.__student_list)>0:
             for student in cls.__student_list:
-                student.view_student_info(True)
-                # churi kora style
+                student.view_student_info(db_style=True)
+                # Bad Practise - churi kora style
                 # print(f"Student ID: {student._Student__student_id}, Name : {student._Student__name}, Department : {student._Student__department}, Enrollment Status : {student._Student__is_enrolled}")
         else:
             print("No Student Data Found in the Database :)")
@@ -109,6 +111,7 @@ lodu = Student(get_random_id(), "Lodu", "EEE")
 # modu.drop_student()
 
 # StudentDatabase.view_all_students()
+
 # menu-driven system
 while True:
     print("")
@@ -143,6 +146,7 @@ while True:
         else:
             print(f"Student [ ID : {s_id} ] not found.")
     elif choice == "4":
+        print("Dhonnobad Ar Asben Na  🙃")
         break
     else:
         print("Invalid choice. Please try again.")
