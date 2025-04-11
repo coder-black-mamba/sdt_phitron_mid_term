@@ -4,7 +4,7 @@ import random
 
 # this is my function for getting random number for student id
 def get_random_id():
-    return random.randint(10000, 99999)
+    return str(random.randint(10000, 99999))
 
 
 
@@ -25,12 +25,20 @@ class StudentDatabase:
     # defining the class method for viewing all the student data
     @classmethod
     def view_all_students(cls):
+        if len(cls.__student_list)>0:
+            for student in cls.__student_list:
+                student.view_student_info(True)
+                # churi kora style
+                # print(f"Student ID: {student._Student__student_id}, Name : {student._Student__name}, Department : {student._Student__department}, Enrollment Status : {student._Student__is_enrolled}")
+        else:
+            print("No Student Data Found in the Database :)")
+
+    @classmethod
+    def find_by_id(cls, student_id):
         for student in cls.__student_list:
-            student.view_student_info(True)
-            # churi kora style
-            # print(f"Student ID: {student._Student__student_id}, Name : {student._Student__name}, Department : {student._Student__department}, Enrollment Status : {student._Student__is_enrolled}")
-
-
+            if student.get_student_id() == student_id:
+                return student
+        return None
 
 
 # defining the Student Class
@@ -42,14 +50,20 @@ class Student:
         self.__is_enrolled = is_enrolled
         StudentDatabase.add_student(self)
 
+    # getter for student id
+    def get_student_id(self):
+        return self.__student_id
+
     # method for enrolling student
     def enroll_student(self):
-        if self.__is_enrolled:
-            print(f"Student [ ID: {self.__student_id} , Name : {self.__name} ] is already enrolled :) ")
-        else:
+        if not self.__is_enrolled:
             self.__is_enrolled=True
             print(f"Student [ ID : {self.__student_id}, Name : {self.__name}, Department : {self.__department}, Enrolled : {self.__is_enrolled} ] Enrollment Successful 🤓🤓🤓")
             # print(f"ID : {self.__student_id}, Name : {self.__name}, Department : {self.__department}, Enrolled : {self.__is_enrolled}")
+        else:
+            raise  Exception(f"Student [ ID: {self.__student_id} , Name : {self.__name} ] is already enrolled :) ")
+
+
 
     # method for drop student
     def drop_student(self):
@@ -57,7 +71,9 @@ class Student:
             self.__is_enrolled=False
             print(f"Student [ ID : {self.__student_id}, Name : {self.__name} ] - Dropped Successfully 😭😭😭")
         else:
-            print(f"Student [ ID: {self.__student_id} , Name : {self.__name} ] is Not Enrolled Yet :) ")
+            raise  Exception(f"Student [ ID: {self.__student_id} , Name : {self.__name} ] is Not Enrolled :) ")
+
+
 
 
     # view student info method for viewing the student data
@@ -69,24 +85,75 @@ class Student:
 
         # for my 2 type of style
         if db_style:
-            print(f"ID : {self.__student_id},Name : {self.__name},Department :{self.__department},Enrolled : {enrollment_status}")
+            print(f"ID : {self.__student_id}, Name : {self.__name}, Department : {self.__department}, Enrolled : {enrollment_status}")
         else:
             print(f"The ID of the student {self.__name} is: {self.__student_id} .He/She is in the DEPT of {self.__department} and currently he/she is  {enrollment_status} .")
 
 
+
+
+# intialization and usesof the classes
 kodu = Student(get_random_id(), "Kodu", "CSE")
 jodu = Student(get_random_id(), "Jodu", "CSE")
 modu = Student(get_random_id(), "Modu", "EEE")
 lodu = Student(get_random_id(), "Lodu", "EEE")
-sahbagi = Student(get_random_id(), "Sahbagi", "Charukola")
 
-kodu.enroll_student()
 
-jodu.view_student_info()
-kodu.view_student_info()
-
-kodu.drop_student()
-jodu.drop_student()
-modu.drop_student()
+# kodu.enroll_student()
+#
+# jodu.view_student_info()
+# kodu.view_student_info()
+#
+# kodu.drop_student()
+# jodu.drop_student()
+# modu.drop_student()
 
 # StudentDatabase.view_all_students()
+# menu-driven system
+while True:
+    print("")
+    print("============_Basic_Student_Management_System_(blackMamba)_===========")
+    print("1. View All Students")
+    print("2. Enroll Student")
+    print("3. Drop Student")
+    print("4. Exit")
+    choice = input("Enter your choice (ex:1) : ")
+
+    if choice == "1":
+        StudentDatabase.view_all_students()
+    elif choice == "2":
+        s_id = input("Enter student ID : ")
+        student = StudentDatabase.find_by_id(s_id)
+        if student:
+            try:
+                student.enroll_student()
+            except Exception as e:
+                print(e)
+        else:
+            print(f"Student [ ID : {s_id} ] not found.")
+    elif choice == "3":
+         # Drop Student
+        s_id = input("Enter student ID : ")
+        student = StudentDatabase.find_by_id(s_id)
+        if student:
+            try:
+                student.drop_student()
+            except Exception as e:
+                print(e)
+        else:
+            print(f"Student [ ID : {s_id} ] not found.")
+    elif choice == "4":
+        break
+    else:
+        print("Invalid choice. Please try again.")
+        break
+
+
+
+
+
+
+
+
+
+
